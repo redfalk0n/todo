@@ -1,0 +1,13 @@
+body {
+    background: url(labeouf.png) right bottom no-repeat;
+    max-width: 800px;
+    align: center;
+    margin: 0 auto;
+}
+
+html {
+    font-family: "Avenir Next", Helevetica, sans-serif;
+    text-align: center;
+    height: 100%;
+}
+

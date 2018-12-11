@@ -1,0 +1,38 @@
+function showList(type){
+    let ul = document.getElementById('list');
+    while(ul.firstChild){
+        ul.removeChild(ul.firstChild)
+    }
+    arr.forEach(function (value, id) {
+        let li = document.createElement("li");
+        li.innerText = value.text;
+        li.id = id;
+        li.complete = value.completed;
+        if (li.complete){
+            li.className = 'done'
+        }
+        li.onclick = changeList;
+        if (type === 'all') {
+            ul.appendChild(li);
+        } else if(type === 'uncompleted' && !li.complete){
+            ul.appendChild(li);
+        } else if (type === 'completed' && li.complete){
+            ul.appendChild(li);
+        }
+
+    })
+}
+    /*if(!localStorage.getItem('lastId')){
+        localStorage.setItem('lastId', '1');
+        var idCounter = 1;
+        localStorage.setItem('filterStatus', 'all')
+    } else if(localStorage.getItem('liData')){
+        idCounter = parseInt(localStorage.getItem('lastId'));
+        arr = JSON.parse(localStorage.getItem('liData'));
+        let uList = document.getElementById('list');
+        arr.forEach(function (value) {
+            let oldLi = createLi(value);
+            uList.appendChild(oldLi);
+        });
+        listFilter(localStorage.getItem('filterStatus'))
+    }*/

@@ -1,0 +1,101 @@
+a{
+    float: right;
+}
+
+body {
+    /*background-image: url("https://ncazaleafestival.org/wp-content/uploads/2017/01/background-2.jpg");*/
+    background: url(labeouf.png) right bottom no-repeat;
+    max-width: 800px;
+    align: center;
+    margin: 0 auto;
+}
+
+.btn-danger{
+    border-color: azure;
+    font-size: 13px;
+    margin-left: 20px;
+}
+
+.btn-group{
+    box-shadow: azure;
+    margin-left: 55px;
+}
+
+.btn-secondary{
+    margin-left: 7px;
+    border-color: azure;
+    font-size: 13px;
+}
+
+.btn-success{
+    background: #0c9416;
+    border-color: azure;
+    margin-top: 5px;
+}
+
+.disabled{
+    text-decoration: line-through;
+}
+
+.hide {
+    display: none;
+}
+
+html {
+    font-family: "Avenir Next", Helevetica, sans-serif;
+    text-align: center;
+    height: 100%;
+}
+
+input {
+    width: 400px;
+    height: 40px;
+    font-size: 30px;
+    border: 1px;
+    border-style: solid;
+}
+
+input:focus {
+    outline: none;
+}
+
+li {
+    font-size: 30px;
+    list-style: none;
+    margin: 0;
+}
+
+li:hover{
+    text-decoration: line-through;
+}
+
+.list-group{
+    margin-top: 10px;
+    margin-left: 70px;
+    margin-bottom: 10px;
+}
+
+.list-group-item{
+    background: none;
+}
+
+.personal {
+    margin-top: 4px;
+    float: right;
+    font-size: 32px;
+    color: red;
+}
+
+.choosed{
+    border-color: #0c9416;
+    border-width: 3px;
+    background: #0c9416;
+}
+
+.ulDone li:not(.disabled) {
+    display: none;
+}
+
+.ulUndone li.disabled{
+    display: none;
+}
