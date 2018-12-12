@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const fs = require('fs');
 const mongo = require('./scripts/mongo');
 const cons = require('consolidate');
 
@@ -58,15 +57,11 @@ app.post('/getList', function (req, res) {
         res.send(data[0]);
         console.log('Data for user "' + req.body.login + '" successfully sended' + ' ---' + (new Date()))
     });
-    //res.sendFile(__dirname + '/listData.txt');
 });
 
 app.post('/tdl', function (req, res) {
     mongo.saveData(req.body);
-    /*fs.writeFile('listData.txt', JSON.stringify(req.body), function(error){
-        if(error) throw error;
-        console.log('File saved');
-    });*/
+
 });
 
 app.listen(3001, function(){
