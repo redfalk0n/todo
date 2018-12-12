@@ -1,23 +1,32 @@
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 
-const url = 'mongodb+srv://redfalk0n:123321@cluster0-wa3uj.mongodb.net/test?retryWrites=true';
-const dbName = 'toDos';
+var express = require('express')
+    , cons = require('consolidate')
+    , app = express();
 
-var data;
+// assign the swig engine to .html files
+app.engine('html', cons.swig);
 
-function getData(callback){
-    MongoClient.connect(url, function(err, client){
-        assert.equal(null, err);
-        const db = client.db(dbName);
-        const collection = db.collection('data');
+// set .html as the default extension
+app.set('view engine', 'html');
+app.set('views', __dirname + '/public');
 
-        collection.find({id:0}).toArray(function(err, data){
-            callback(data)
-        })
-    })
-}
+var users = [];
+users.push({ name: 'tobi' });
+users.push({ name: 'loki' });
+users.push({ name: 'jane' });
 
-getData(function (data) {
-    console.log(data)
-})
+app.get('/', function(req, res){
+    res.render('index', {
+        title: 'Consolidate.js'
+    });
+});
+
+app.get('/users', function(req, res){
+    res.render('users', {
+        title: 'Users',
+        users: users
+    });
+});
+
+app.listen(3000);
+console.log('Express server listening on port 3000');

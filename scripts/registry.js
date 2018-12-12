@@ -29,7 +29,7 @@ function registry(){
         } else if (xhr.response === 'success'){
             localStorage.setItem('login', login);
             localStorage.setItem('password', pass);
-            document.location.href = '/tdl.html';
+            document.location.href = '/tdl';
         } else {
             alert('Неизвестная ошибка!')
         }

@@ -17,7 +17,7 @@ function auth(){
         } else if (xhr.response === 'valid data'){
             localStorage.setItem('login', login);
             localStorage.setItem('password', pass);
-            document.location.href = '/tdl.html';
+            document.location.href = '/tdl';
         } else {
             alert('Неизвестная ошибка!')
         }

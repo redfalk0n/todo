@@ -3,11 +3,37 @@ const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const mongo = require('./scripts/mongo');
+const cons = require('consolidate');
 
 app.use(express.static('public'));
 app.use(express.static('scripts'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
+app.engine('html', cons.swig);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/public');
+
+app.get('/', (req, res) => {
+    res.render('index',{}, (err, html) => {
+        if (err) {throw err}
+        res.send(html);
+    });
+});
+
+app.get('/tdl', (req, res) => {
+    res.render('tdl',{}, (err, html) => {
+        if (err) {throw err}
+        res.send(html);
+    });
+});
+
+app.get('/registry', (req, res) => {
+    res.render('registry',{}, (err, html) => {
+        if (err) {throw err}
+        res.send(html);
+    });
+});
 
 app.post('/auth', function (req, res){
     mongo.getData(req.body.login, req.body.password, function(data){
