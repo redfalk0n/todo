@@ -10,25 +10,27 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 app.engine('html', cons.swig);
+app.engine('pug', cons.pug);
 app.set('view engine', 'html');
+app.set('view engine', 'pug');
 app.set('views', __dirname + '/public');
 
 app.get('/', (req, res) => {
-    res.render('index',{}, (err, html) => {
+    res.render('index.html', (err, html) => {
         if (err) {throw err}
         res.send(html);
     });
 });
 
 app.get('/tdl', (req, res) => {
-    res.render('tdl',{}, (err, html) => {
+    res.render('tdl.html', (err, html) => {
         if (err) {throw err}
         res.send(html);
     });
 });
 
 app.get('/registry', (req, res) => {
-    res.render('registry',{}, (err, html) => {
+    res.render('registry.pug', (err, html) => {
         if (err) {throw err}
         res.send(html);
     });

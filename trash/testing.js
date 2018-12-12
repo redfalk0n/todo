@@ -1,32 +1,79 @@
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+//const mongo = require('./scripts/mongo');
+const cons = require('consolidate');
 
-var express = require('express')
-    , cons = require('consolidate')
-    , app = express();
+//app.use(express.static('public'));
+//app.use(express.static('scripts'));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
-// assign the swig engine to .html files
 app.engine('html', cons.swig);
-
-// set .html as the default extension
+app.engine('pug', cons.pug);
+app.set('view engine', 'pug');
 app.set('view engine', 'html');
-app.set('views', __dirname + '/public');
+app.set('views', __dirname + '/views');
 
-var users = [];
-users.push({ name: 'tobi' });
-users.push({ name: 'loki' });
-users.push({ name: 'jane' });
+app.get('/', (req, res) => {
+    res.render('index.pug')
+});
 
-app.get('/', function(req, res){
-    res.render('index', {
-        title: 'Consolidate.js'
+
+
+/*
+app.get('/', (req, res) => {
+    res.render('index', (err, html) => {
+        if (err) {throw err}
+        res.send(html);
     });
 });
 
-app.get('/users', function(req, res){
-    res.render('users', {
-        title: 'Users',
-        users: users
+app.get('/tdl', (req, res) => {
+    res.render('tdl', (err, html) => {
+        if (err) {throw err}
+        res.send(html);
     });
 });
 
-app.listen(3000);
-console.log('Express server listening on port 3000');
+app.get('/registry', (req, res) => {
+    res.render('registry', (err, html) => {
+        if (err) {throw err}
+        res.send(html);
+    });
+});
+
+app.post('/auth', function (req, res){
+    mongo.getData(req.body.login, req.body.password, function(data){
+        if (data.length === 0){
+            res.send('no data');
+            console.log('Failed auth for user ' + req.body.login + ' ---' + (new Date()));
+        } else {
+            res.send('valid data');
+            console.log('User "' + req.body.login + '" successfully logged in' + ' ---' + (new Date()))
+        }
+    });
+});
+
+app.post('/registry', function (req, res) {
+    mongo.newUser(req.body.login, req.body.password, function(answer){
+        res.send(answer)
+    });
+});
+
+app.post('/getList', function (req, res) {
+    mongo.getData(req.body.login, req.body.password,function(data){
+        res.send(data[0]);
+        console.log('Data for user "' + req.body.login + '" successfully sended' + ' ---' + (new Date()))
+    });
+});
+
+app.post('/tdl', function (req, res) {
+    mongo.saveData(req.body);
+
+});
+*/
+app.listen(3002, function(){
+    console.log('Server has started on port 3002' + ' ---' + (new Date()));
+});
+
