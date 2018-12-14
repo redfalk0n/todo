@@ -1,79 +1,76 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
-//const mongo = require('./scripts/mongo');
 const cons = require('consolidate');
+const morgan = require('morgan')
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const cors = require('cors');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const mongoLocal = require('passport-local-mongoose');
 
-//app.use(express.static('public'));
-//app.use(express.static('scripts'));
-app.use(bodyParser.urlencoded({extended:false}));
+const app = express();
+
+mongoose.connect('mongodb://localhost/test');
+
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+    username: {type: String, required: true, unique: true},
+    hash: {type: String, required: true},
+    salt: {type: String, required: true},
+    data: {type: Array, default: []}
+});
+
+
+UserSchema.methods.setShtuki = function(dsa, ewq, rew){
+    this.username = dsa;
+    this.hash = ewq;
+    this.salt = rew
+};
+
+const User = mongoose.model('user', UserSchema);
+
+var qwe = new User;
+qwe.setShtuki('adfsdq', 'eqweqwerwq', 'eqwerqrt');
+qwe.save();
+
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+//app.use(passport.session());
 
-app.engine('html', cons.swig);
-app.engine('pug', cons.pug);
-app.set('view engine', 'pug');
-app.set('view engine', 'html');
-app.set('views', __dirname + '/views');
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        done(null ,'321');
+        /*console.log(username + ' ' + password);
+        User.findOne({ username: username }, function (err, user) {
+            if (err) {
+                console.log('dsa');
+                return done(err); }
 
-app.get('/', (req, res) => {
-    res.render('index.pug')
+            if (!user) {
+                console.log('qwe');
+                return done(null, false); }
+            if (!user.verifyPassword(password)) {
+                console.log('ewq');
+                return done(null, false); }
+            console.log('zxc');
+            return done(null, user);
+        });*/
+    }
+));
+
+
+app.post('/a', passport.authenticate('local', {failureRedirect: '/b', session: false}), (req, res) => {
+    res.send('norm')
 });
 
-
-
-/*
-app.get('/', (req, res) => {
-    res.render('index', (err, html) => {
-        if (err) {throw err}
-        res.send(html);
-    });
+app.get('/b', (req, res) => {
+    res.send('ne norm')
 });
 
-app.get('/tdl', (req, res) => {
-    res.render('tdl', (err, html) => {
-        if (err) {throw err}
-        res.send(html);
-    });
-});
-
-app.get('/registry', (req, res) => {
-    res.render('registry', (err, html) => {
-        if (err) {throw err}
-        res.send(html);
-    });
-});
-
-app.post('/auth', function (req, res){
-    mongo.getData(req.body.login, req.body.password, function(data){
-        if (data.length === 0){
-            res.send('no data');
-            console.log('Failed auth for user ' + req.body.login + ' ---' + (new Date()));
-        } else {
-            res.send('valid data');
-            console.log('User "' + req.body.login + '" successfully logged in' + ' ---' + (new Date()))
-        }
-    });
-});
-
-app.post('/registry', function (req, res) {
-    mongo.newUser(req.body.login, req.body.password, function(answer){
-        res.send(answer)
-    });
-});
-
-app.post('/getList', function (req, res) {
-    mongo.getData(req.body.login, req.body.password,function(data){
-        res.send(data[0]);
-        console.log('Data for user "' + req.body.login + '" successfully sended' + ' ---' + (new Date()))
-    });
-});
-
-app.post('/tdl', function (req, res) {
-    mongo.saveData(req.body);
-
-});
-*/
-app.listen(3002, function(){
-    console.log('Server has started on port 3002' + ' ---' + (new Date()));
-});
-
+app.listen(3005, () => console.log('Running'));

@@ -1,19 +1,38 @@
-const express = require('express');
+const express       = require('express');
+const bodyParser    = require('body-parser');
+const cons          = require('consolidate');
+const morgan        = require('morgan');
+const passport      = require('passport');
+const expressJwt    = require('express-jwt');
+const passportConf  = require('./scripts/passportConfig');
+const mongo         = require('./scripts/mongo');
 const app = express();
-const bodyParser = require('body-parser');
-const mongo = require('./scripts/mongo');
-const cons = require('consolidate');
+require('./scripts/passportConfig');
 
+app.use(morgan('short'));
 app.use(express.static('public'));
 app.use(express.static('scripts'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+
+passport.use('newUser', passportConf.newUser);
+passport.use('existedUser', passportConf.existedUser);
 
 app.engine('html', cons.swig);
 app.engine('pug', cons.pug);
 app.set('view engine', 'html');
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/public');
+
+//, passport.authenticate('local', {failureRedirect: '/b', session: false}),
+app.post('/registry', passport.authenticate('newUser', {session: false}), (req, res) => {
+    res.send(req.user);
+});
+
+app.post('/auth', passport.authenticate('existedUser', {session: false}), (req, res) => {
+    res.send(req.user);
+});
 
 app.get('/', (req, res) => {
     res.render('index.html', (err, html) => {
@@ -36,33 +55,17 @@ app.get('/registry', (req, res) => {
     });
 });
 
-app.post('/auth', function (req, res){
-    mongo.getData(req.body.login, req.body.password, function(data){
-        if (data.length === 0){
-            res.send('no data');
-            console.log('Failed auth for user ' + req.body.login + ' ---' + (new Date()));
-        } else {
-            res.send('valid data');
-            console.log('User "' + req.body.login + '" successfully logged in' + ' ---' + (new Date()))
-        }
-    });
-});
-
-app.post('/registry', function (req, res) {
-    mongo.newUser(req.body.login, req.body.password, function(answer){
-        res.send(answer)
-    });
-});
-
-app.post('/getList', function (req, res) {
-    mongo.getData(req.body.login, req.body.password,function(data){
-        res.send(data[0]);
+app.get('/getList', expressJwt({secret: 'ToDoSecret'}), function (req, res) {
+    mongo.getData(req.user.username,function(data){
+        res.send(data);
         console.log('Data for user "' + req.body.login + '" successfully sended' + ' ---' + (new Date()))
     });
 });
 
-app.post('/tdl', function (req, res) {
-    mongo.saveData(req.body);
+app.post('/tdl', expressJwt({secret: 'ToDoSecret'}), function (req, res) {
+    mongo.saveData(req.user.username, req.body, (answer) => {
+        res.send(answer);
+    });
 
 });
 

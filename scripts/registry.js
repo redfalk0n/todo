@@ -1,11 +1,11 @@
 const xhr = new XMLHttpRequest();
 
 function registry(){
-    const login = document.getElementById('login').value;
+    const username = document.getElementById('login').value;
     const pass = document.getElementById('pass').value;
     const passConfirm = document.getElementById('passConfirm').value;
 
-    if(!login || !pass || !passConfirm){
+    if(!username || !pass || !passConfirm){
         alert("Заполните все поля!");
         return
     }
@@ -16,19 +16,16 @@ function registry(){
     }
 
     xhr.open('POST', '/registry', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    let data = {
-        login: login,
-        password: pass
-    };
-    xhr.send(JSON.stringify(data));
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    let data = 'username=' + encodeURIComponent(username) +
+        '&password=' + encodeURIComponent(pass);
+    xhr.send(data);
     xhr.onreadystatechange = function(){
         if (xhr.readyState != 4) return;
-        if (xhr.response === 'existed'){
+        if (xhr.response === 'Unauthorized'){
             alert('Такой пользователь уже существует!')
-        } else if (xhr.response === 'success'){
-            localStorage.setItem('login', login);
-            localStorage.setItem('password', pass);
+        } else if (xhr.response){
+            localStorage.setItem('token', xhr.response);
             document.location.href = '/tdl';
         } else {
             alert('Неизвестная ошибка!')

@@ -1,22 +1,19 @@
 const xhr = new XMLHttpRequest();
 
 function auth(){
-    let login = document.getElementById('login').value;
+    let username = document.getElementById('login').value;
     let pass = document.getElementById('pass').value;
     xhr.open('POST', '/auth', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    let data = {
-        login: login,
-        password: pass
-    };
-    xhr.send(JSON.stringify(data));
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    let data = 'username=' + encodeURIComponent(username) +
+        '&password=' + encodeURIComponent(pass);
+    xhr.send(data);
     xhr.onreadystatechange = function(){
         if (xhr.readyState != 4) return;
-        if (xhr.response === 'no data'){
+        if (xhr.response === 'Unauthorized'){
             alert('Неправильный логин или пароль!')
-        } else if (xhr.response === 'valid data'){
-            localStorage.setItem('login', login);
-            localStorage.setItem('password', pass);
+        } else if (xhr.response){
+            localStorage.setItem('token', xhr.response);
             document.location.href = '/tdl';
         } else {
             alert('Неизвестная ошибка!')

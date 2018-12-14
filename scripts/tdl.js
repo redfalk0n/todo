@@ -2,17 +2,14 @@
 var arr = [];
 const xhr = new XMLHttpRequest();
 
-const login = localStorage.getItem('login');
-const password = localStorage.getItem('password');
-if(!login || !password){
-    document.location.href = '/'
-}
-
-xhr.open('POST', '/getList', true);
+xhr.open('GET', '/getList', true);
 xhr.setRequestHeader('Content-Type', 'application/json');
-xhr.send(JSON.stringify({login: login, password: password}));
+xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+xhr.send();
+
 xhr.onreadystatechange = function(){
     if (xhr.readyState != 4) return;
+    if (xhr.status === 401) { document.location.href = '/'}
     let resp = JSON.parse(xhr.response);
     arr = resp.data;
     localStorage.setItem('idCounter', resp.idCounter);
@@ -160,11 +157,10 @@ function deleteAll() {
 function sendToServer(){
     let data = {
         data: arr,
-        idCounter: localStorage.getItem('idCounter'),
-        login: localStorage.getItem('login'),
-        password: localStorage.getItem('password')
+        idCounter: localStorage.getItem('idCounter')
     };
     xhr.open('POST', '/tdl', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
     xhr.send(JSON.stringify(data))
 }
