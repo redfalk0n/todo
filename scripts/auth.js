@@ -3,6 +3,10 @@ const xhr = new XMLHttpRequest();
 function auth(){
     let username = document.getElementById('login').value;
     let pass = document.getElementById('pass').value;
+    if (!username || !pass){
+        alert("Заполните все поля!");
+        return;
+    }
     xhr.open('POST', '/auth', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     let data = 'username=' + encodeURIComponent(username) +

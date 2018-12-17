@@ -7,7 +7,6 @@ const expressJwt    = require('express-jwt');
 const passportConf  = require('./scripts/passportConfig');
 const mongo         = require('./scripts/mongo');
 const app = express();
-require('./scripts/passportConfig');
 
 app.use(morgan('short'));
 app.use(express.static('public'));
@@ -25,7 +24,6 @@ app.set('view engine', 'html');
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/public');
 
-//, passport.authenticate('local', {failureRedirect: '/b', session: false}),
 app.post('/registry', passport.authenticate('newUser', {session: false}), (req, res) => {
     res.send(req.user);
 });
