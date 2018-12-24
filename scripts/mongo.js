@@ -2,7 +2,7 @@ const mongoose    = require('mongoose');
 const crypto      = require('crypto');
 const jwt         = require('jsonwebtoken');
 
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb+srv://redfalk0n:123321@cluster0-wa3uj.mongodb.net/test?retryWrites=true');
 
 const Schema = mongoose.Schema;
 
