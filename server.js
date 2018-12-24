@@ -6,6 +6,7 @@ const passport      = require('passport');
 const expressJwt    = require('express-jwt');
 const passportConf  = require('./scripts/passportConfig');
 const mongo         = require('./scripts/mongo');
+const PORT          = process.env.PORT || 5000;
 const app = express();
 
 app.use(morgan('short'));
@@ -67,6 +68,6 @@ app.post('/tdl', expressJwt({secret: 'ToDoSecret'}), function (req, res) {
 
 });
 
-app.listen(3001, function(){
+app.listen(PORT, function(){
     console.log('Server has started on port 3001' + ' ---' + (new Date()));
 });
