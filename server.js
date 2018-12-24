@@ -68,6 +68,6 @@ app.post('/tdl', expressJwt({secret: 'ToDoSecret'}), function (req, res) {
 
 });
 
-app.listen(PORT, function(){
+app.listen(process.env.PORT || 5000, function(){
     console.log('Server has started on port 3001' + ' ---' + (new Date()));
 });
