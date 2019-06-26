@@ -7,7 +7,7 @@ router.post('/netlify', (req, res, next) => {
   axios.post(
       'https://api.telegram.org/bot890368618:AAF-8rh-KMTZg_uX5EKyp9bVKNjJZoyf2Vo/sendMessage',
       {
-        text: JSON.stringify(req.body),
+        text: `Successful deploy. \n ${req.body.url}`,
         chat_id: 253527664
       }
   ).then(res => {console.log(res)})
