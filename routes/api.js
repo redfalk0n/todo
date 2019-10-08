@@ -22,6 +22,7 @@ router.post('/netlify', (req, res, next) => {
 })
 
 router.post('/pictureTest', (req, res, next) => {
+  const chat_id = req.body.message.chat.id
   if (req.body.message.text === "/raspisaniehochu") {
     axios.get('https://www.site-shot.com/screenshot/?width=1024&height=768&zoom=100&scaled_width=1024&full_size=&format=PNG&user_agent=&rnd=29814755364865&url=http%3A%2F%2Fschedule.npi-tu.ru%2Fschedule%2Ffitu%2F2%2F5m')
       .then(resp => {
@@ -29,7 +30,7 @@ router.post('/pictureTest', (req, res, next) => {
         axios.post(
           botApi + 'sendPhoto',
           {
-            chat_id: 253527664,
+            chat_id: chat_id,
             photo: `https://www.site-shot.com/cached_image/${resp.data.b64_uuid}`
           }
         ).then(resp => {
@@ -43,11 +44,11 @@ router.post('/pictureTest', (req, res, next) => {
       }).catch(err => {
         res.send(err)
       })
-  } else {
+  } else if (req.body.message.text === "/givemepicture") {
     axios.post(
       botApi + 'sendPhoto',
       {
-        chat_id: 253527664,
+        chat_id: chat_id,
         photo: `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/500/500`
       }
     ).then(res => {
@@ -58,6 +59,8 @@ router.post('/pictureTest', (req, res, next) => {
       console.log(err)
       res.send(err)
     })
+  } else {
+    res.send('Failure')
   }
   console.log(req.body)
 })
