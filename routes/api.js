@@ -22,7 +22,7 @@ router.post('/netlify', (req, res, next) => {
 })
 
 router.post('/pictureTest', (req, res, next) => {
-  if (req.body.message === "/raspisaniehochu") {
+  if (req.body.message.text === "/raspisaniehochu") {
     axios.get('https://www.site-shot.com/screenshot/?width=1024&height=768&zoom=100&scaled_width=1024&full_size=&format=PNG&user_agent=&rnd=29814755364865&url=http%3A%2F%2Fschedule.npi-tu.ru%2Fschedule%2Ffitu%2F2%2F5m')
       .then(res => {
         axios.post(
