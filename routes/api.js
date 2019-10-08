@@ -12,13 +12,13 @@ router.post('/netlify', (req, res, next) => {
         chat_id: 253527664
       }
   ).then(res => {
-      console.log(res)
-      res.send('Success')
-    })
-    .catch(err => {
-      console.log(err)
-      res.send(err)
-    })
+    console.log(res)
+    res.send('Success')
+  })
+  .catch(err => {
+    console.log(err)
+    res.send(err)
+  })
 })
 
 router.post('/pictureTest', (req, res, next) => {
@@ -28,7 +28,14 @@ router.post('/pictureTest', (req, res, next) => {
       chat_id: 253527664,
       photo: 'https://picsum.photos/500'
     }
-  )
+  ).then(res => {
+    console.log(res)
+    res.send('Success')
+  })
+  .catch(err => {
+    console.log(err)
+    res.send(err)
+  })
 })
 
 module.exports = router;
