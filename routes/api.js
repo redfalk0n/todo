@@ -22,6 +22,7 @@ router.post('/netlify', (req, res, next) => {
 })
 
 router.post('/pictureTest', (req, res, next) => {
+  console.log(res.body)
   axios.post(
     botApi + 'sendPhoto',
     {
