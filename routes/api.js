@@ -26,7 +26,7 @@ router.post('/pictureTest', (req, res, next) => {
     botApi + 'sendPhoto',
     {
       chat_id: 253527664,
-      photo: `https://picsum.photos/id/${Math.floor(Math.random*1000)}/500/500`
+      photo: `https://picsum.photos/id/${Math.floor(Math.random() * 1000)}/500/500`
     }
   ).then(res => {
     console.log(res)
