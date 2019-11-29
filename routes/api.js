@@ -62,4 +62,29 @@ router.post('/pictureTest', (req, res, next) => {
   console.log(req.body)
 })
 
+router.post('/alice', (req, res, next) => {
+  console.log(req.body.request.command)
+  res.send({
+    "response": {
+      "text": "Проверка прошла",
+      "tts": "Похоже, работает",
+      // "buttons": [
+      //     {
+      //         "title": "Надпись на кнопке",
+      //         "payload": {},
+      //         "url": "https://example.com/",
+      //         "hide": true
+      //     }
+      // ],
+      "end_session": false
+    },
+    "session": {
+      "session_id": req.body.session.session_id,
+      "message_id": req.body.session.message_id,
+      "user_id": req.body.session.user_id,
+    },
+    "version": req.body.version
+  })
+})
+
 module.exports = router;
